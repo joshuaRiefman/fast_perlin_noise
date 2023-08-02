@@ -21,8 +21,8 @@ To run perlinNoise and generate example simplex and Perlin noise images,
 ```bash
 go run main/src
 ```
-![Simplex Noise](output_simplex.png)  
-![Perlin Noise](output_perlin.png)  
+![Simplex Noise](example/output_simplex.png)  
+![Perlin Noise](example/output_perlin.png)  
 Or, you can run the Python test script that serves as a demo of how to integrate perlinNoise into your project.
 Ensure you have the required dependencies:
 ```bash
