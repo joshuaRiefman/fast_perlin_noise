@@ -36,4 +36,35 @@ python3 test.py
 ```
 
 ## Output 
-_perlinNoise_ currently outputs a `256x256` matrix of noise of which the values range from `0.0` to `1.0`. Capacity to control dimensions is under development.
+_perlinNoise_ currently outputs a matrix of noise of which the values range from `0.0` to `1.0`.
+
+## Interface and Parameters
+
+Perlin noise can be generated using the `generatePerlinNoise` function. See `test.py` for an example of how to load and access the library in Python.
+
+| Parameter     | Type     | Description                                                                     |
+|---------------|----------|---------------------------------------------------------------------------------|
+| resultPtr     | *float32 | Pointer to the output matrix (faked dimensionality)[[1]](#faked-dimensionality) |
+| width         | uint32   | Width of resultant matrix.                                                      |
+| height        | uint32   | Height of resultant matrix.                                                     |
+| persistence   | float32  | Intensity falloff coefficient of subsequent noise layers.                       |
+| numLayers     | uint32   | Number of simplex noise layers to use.                                          |
+| roughness     | float32  | Frequency increase coefficient for subsequent noise layers.                     |
+| baseRoughness | float32  | Initial frequency for noise                                                     |
+| strength      | float32  | Scalar multiplier for noise values                                              |
+| randomSeed    | float32  | Define the random seed to be used                                               |
+
+
+## Controlling the noise's behaviour
+
+Behaviour of the noise can be changed by changing parameters to the `generatePerlinNoise` interface. 
+Settings include `width` and `height` to determine the dimensions of the resulting matrix. `baseRoughness` and `roughness` to control the frequency and frequency falloff.
+`persistence` to change the impact of subsequent layers (low value results in a "softer" look). `numLayers` controls how many layers of noise will be used (more layers results in more complex, structured noise).
+`strength` is a simple scalar multiplier to the matrix (control intensity of noise). Lastly, `randomSeed` can be changed to change the seed of the noise (_perlinNoise_ is deterministic when randomSeed is known). 
+
+### Faked Dimensionality
+
+For reduced complexity of the interface between the compiled library and the user, two-dimensionality is faked for the output matrix.
+Instead of an actual `[width, height]` matrix, an array of `width * height` elements will be used. Nonetheless, dimensionality is faked by indexing
+what would be at `[x, y]` if we were using an actual matrix by indexing `[x * width + y]` in our faked-dimensionality array.
+The result for the use case of _perlinNoise_ is identical functionality with a simpler interface.  

@@ -35,7 +35,7 @@ This file has been ported to Go, and changes made by Joshua Riefman for UBC Sola
 package main
 
 type Noise struct {
-	_random [RandomSize * 2]int32
+	_random []int32
 }
 
 var source = [256]int32{151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142,
@@ -85,10 +85,10 @@ func UnpackLittleUint32(value uint32) [4]byte {
 	return buffer
 }
 
-func randomize(randomSeed uint32) [RandomSize * 2]int32 {
+func randomize(randomSeed uint32) []int32 {
 	defer duration(track("randomize"))
 
-	var _random [RandomSize * 2]int32
+	var _random = make([]int32, RandomSize*2)
 
 	if randomSeed != 0 {
 		// Shuffle the array using the given seed

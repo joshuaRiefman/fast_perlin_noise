@@ -5,7 +5,7 @@ type NoiseSettings struct {
 	baseRoughness float32
 	roughness     float32
 	centre        v3
-	numLayers     int32
+	numLayers     uint32
 	persistence   float32
 }
 
@@ -19,7 +19,7 @@ func evaluatePerlinNoise(point v3, noise *Noise, noiseSettings *NoiseSettings) f
 	frequency := noiseSettings.baseRoughness
 	var amplitude float32 = 1
 
-	for i := 0; int32(i) < noiseSettings.numLayers; i++ {
+	for i := 0; uint32(i) < noiseSettings.numLayers; i++ {
 		v := evaluateNoise(v3Add(v3ScalarMultiply(point, frequency), noiseSettings.centre), noise)
 		noiseValue += (v + 1) * 0.5 * amplitude
 		frequency *= noiseSettings.roughness
