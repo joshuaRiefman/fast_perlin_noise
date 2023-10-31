@@ -32,7 +32,7 @@ pip3 install -r requirements.txt
 ```
 To run the script,
 ```bash
-python3 test.py
+python3 example.py
 ```
 
 ## Output 
@@ -65,6 +65,23 @@ Settings include `width` and `height` to determine the dimensions of the resulti
 ### Faked Dimensionality
 
 For reduced complexity of the interface between the compiled library and the user, two-dimensionality is faked for the output matrix.
-Instead of an actual `[width, height]` matrix, an array of `width * height` elements will be used. Nonetheless, dimensionality is faked by indexing
-what would be at `[x, y]` if we were using an actual matrix by indexing `[x * width + y]` in our faked-dimensionality array.
-The result for the use case of _perlinNoise_ is identical functionality with a simpler interface.  
+Instead of an actual `[width, height]` matrix, a vector of `width * height` elements will be used. Nonetheless, we can index
+what would be at `[x, y]` if we were using an actual matrix by indexing `[x * width + y]` in our vector, thus faking
+the dimensions. The result for the use case of _perlinNoise_ is identical functionality with a simpler interface.
+
+<br>
+
+It is easy to restore the actual matrix. Here's an example with NumPy, and without NumPy in Python. Assuming that `output_vector` is the resultant vector returned by `generatePerlinNoise` with
+which was called with `width=N` and `height=M`.
+```python
+# Example using NumPy
+import numpy as np
+noise_vector: np.ndarray = np.array(output_vector, 'f')
+noise_matrix: np.ndarray = noise_vector.reshape(N, M)
+
+# Example without NumPy
+noise_matrix = [[], []]
+for x in range(N):
+    for y in range(M):
+        noise_matrix[x, y] = output_vector[x * N + y]
+```
