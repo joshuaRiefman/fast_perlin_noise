@@ -5,13 +5,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+"""
+
+This file should serve as an example of how the compiled libraries could be directly interfaced with.
+For any actual use, use bindings provided by PerlinNoise. Do NOT use the bindings provided in this file.
+
+"""
+
+
 class NoiseTest:
     def __init__(self):
+        # You will NEED to configure this
+        PATH_TO_LIBRARY = "../perlin_noise.so"
+
         # -----    Logic below is required for interfacing with the compiled     -----
         # -----    library and should not be modified for your implementation    -----
 
         # Load shared library
-        self.go_library = ctypes.cdll.LoadLibrary("perlin_noise.so")
+        self.go_library = ctypes.cdll.LoadLibrary(PATH_TO_LIBRARY)
 
         # Assign parameter types
         self.go_library.generatePerlinNoise.argtypes = [
