@@ -65,7 +65,7 @@ DEPENDENCIES: list[str] = [go_parallel]
 
 
 def _build_compile_perlin_noise_cmd() -> str:
-    cmd = CMD_BUILD_PERLIN + f"{pathlib.Path(__file__).parent.parent}/src/"
+    cmd = CMD_BUILD_PERLIN + f"{pathlib.Path(__file__).parent}/src/"
     return cmd
 
 

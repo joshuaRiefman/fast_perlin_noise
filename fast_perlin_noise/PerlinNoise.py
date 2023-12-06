@@ -47,8 +47,8 @@ class PerlinNoise:
         self.strength: float = strength
         self.random_mode: PerlinNoise.RandomMode = random_mode
 
-        PerlinNoise._mount()
-        self.go_library = ctypes.cdll.LoadLibrary(f"{pathlib.Path(__file__).parent.parent}/bin/perlin_noise.so")
+        _mount()
+        self.go_library = ctypes.cdll.LoadLibrary(f"{pathlib.Path(__file__).parent}/bin/perlin_noise.so")
 
         self.go_library.generatePerlinNoise.argtypes = [
             ctypes.POINTER(ctypes.c_float),
