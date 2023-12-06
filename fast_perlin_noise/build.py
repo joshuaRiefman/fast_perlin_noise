@@ -211,7 +211,7 @@ def _search_for_libraries() -> bool:
 
 
 def _get_libraries_directory() -> str:
-    return f"{pathlib.Path(__file__).parent.parent}/bin/"
+    return f"{pathlib.Path(__file__).parent}/bin/"
 
 
 def _make_destination_directory():
