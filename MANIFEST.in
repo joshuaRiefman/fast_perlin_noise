@@ -1,0 +1,3 @@
+include example/*.png
+include src/*.go
+include bin/*.so
