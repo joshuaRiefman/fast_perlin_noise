@@ -2,7 +2,7 @@ import pathlib
 import subprocess
 import numpy as np
 import ctypes
-from enum import StrEnum
+from strenum import StrEnum
 
 
 class PerlinNoise:

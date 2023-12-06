@@ -12,7 +12,7 @@ maintainers = [
 ]
 description = "A fast Perlin noise generation library!"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 keywords = ["perlin-noise", "noise", "go"]
 license = { file = "LICENSE"}
 classifiers = [
@@ -23,7 +23,8 @@ classifiers = [
 dependencies = [
     "matplotlib~=3.7.2",
     "numpy~=1.25.2",
-    "tqdm"
+    "tqdm",
+    "strenum"
 ]
 dynamic = ["version"]
 
