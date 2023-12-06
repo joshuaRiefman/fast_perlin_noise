@@ -1,6 +1,8 @@
-from enum import StrEnum
+import pathlib
+import subprocess
 import numpy as np
 import ctypes
+from enum import StrEnum
 
 
 class PerlinNoise:
@@ -45,7 +47,8 @@ class PerlinNoise:
         self.strength: float = strength
         self.random_mode: PerlinNoise.RandomMode = random_mode
 
-        self.go_library = ctypes.cdll.LoadLibrary("perlin_noise.so")
+        PerlinNoise._mount()
+        self.go_library = ctypes.cdll.LoadLibrary(f"{pathlib.Path(__file__).parent.parent}/bin/perlin_noise.so")
 
         self.go_library.generatePerlinNoise.argtypes = [
             ctypes.POINTER(ctypes.c_float),
@@ -59,7 +62,7 @@ class PerlinNoise:
             ctypes.c_uint32
         ]
 
-    def generate_noise_matrix(self, width: int = None, height: int = None, random_seed: float = None) -> np.ndarray:
+    def generate_noise_matrix(self, width: int = None, height: int = None, random_seed: int = None) -> np.ndarray:
         """
 
         Generate randomized Perlin noise as a matrix which can be interpreted in various manners (image values,
@@ -79,7 +82,7 @@ class PerlinNoise:
             assert random_seed is not None, "Random Seed must be defined when using RandomMode.defined!"
             noise_random_seed = random_seed
         else:
-            noise_random_seed: float = np.random.random()
+            noise_random_seed: int = int(np.random.random())
 
         output_array = np.zeros(width * height).astype(ctypes.c_float)
         ptr = output_array.ctypes.data_as(ctypes.POINTER(ctypes.c_float))
@@ -112,3 +115,18 @@ class PerlinNoise:
         """
 
         return self.generate_noise_matrix(size, 1, random_seed)
+
+    @staticmethod
+    def _mount():
+        """
+
+        Ensure that Go libraries have been compiled, and compile them if they have not.
+
+        """
+
+        try:
+            subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/build.py"], check=True)
+
+        except subprocess.CalledProcessError:
+            print("Failed to acquire or compile libraries! Aborting...")
+            exit(1)
