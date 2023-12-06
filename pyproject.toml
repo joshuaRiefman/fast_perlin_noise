@@ -38,5 +38,5 @@ enabled = true
 packages = ["fast_perlin_noise"]
 
 [project.scripts]
-mount = "fast_perlin_noise.PerlinNoise:_mount"
+mount_perlin_noise = "fast_perlin_noise.PerlinNoise:_mount"
 test_perlin_noise = "fast_perlin_noise.PerlinNoise:test"
