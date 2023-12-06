@@ -116,22 +116,22 @@ class PerlinNoise:
 
         return self.generate_noise_matrix(size, 1, random_seed)
 
-    @staticmethod
-    def _mount():
-        """
-
-        Ensure that Go libraries have been compiled, and compile them if they have not.
-
-        """
-
-        try:
-            subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/build.py"], check=True)
-
-        except subprocess.CalledProcessError:
-            print("Failed to acquire or compile libraries! Aborting...")
-            exit(1)
-
 
 def test():
-    noise = PerlinNoise().generate_noise_matrix(256, 256)
+    PerlinNoise().generate_noise_matrix(256, 256)
     print("Success!")
+
+
+def _mount():
+    """
+
+    Ensure that Go libraries have been compiled, and compile them if they have not.
+
+    """
+
+    try:
+        subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/build.py"], check=True)
+
+    except subprocess.CalledProcessError:
+        print("Failed to acquire or compile libraries! Aborting...")
+        exit(1)
