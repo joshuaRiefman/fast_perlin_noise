@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "setuptools-git-versioning"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Fast-Perlin-Noise"
+authors = [
+    {name = "Joshua Riefman", email = "joshuariefman@gmail.com"}
+]
+maintainers = [
+    {name = "Joshua Riefman", email = "joshuariefman@gmail.com"}
+]
+description = "A fast Perlin noise generation library!"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["perlin-noise", "noise", "go"]
+license = { file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+dependencies = [
+    "matplotlib~=3.7.2",
+    "numpy~=1.25.2",
+    "tqdm"
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/joshuaRiefman/perlinNoise"
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[tool.setuptools]
+packages = ["fast_perlin_noise"]
+
+[project.scripts]
+mount = "fast_perlin_noise.PerlinNoise:_mount"
+
