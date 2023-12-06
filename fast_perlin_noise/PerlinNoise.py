@@ -130,3 +130,8 @@ class PerlinNoise:
         except subprocess.CalledProcessError:
             print("Failed to acquire or compile libraries! Aborting...")
             exit(1)
+
+
+def test():
+    noise = PerlinNoise().generate_noise_matrix(256, 256)
+    print("Success!")
