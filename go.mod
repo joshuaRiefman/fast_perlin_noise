@@ -1,4 +1,4 @@
-module main
+module perlinNoise
 
 go 1.19
 
