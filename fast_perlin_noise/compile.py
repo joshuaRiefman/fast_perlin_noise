@@ -60,7 +60,7 @@ EXIT_MOVED_FAILED_ERROR = 5  # Exit code for when moving fails
 EXIT_DEPENDENCY_FAILURE = 6  # Exit code for when acquiring a dependency fails
 
 # < ---- Go Dependencies ---- >
-go_parallel = "github.com/dgravesa/go-parallel"
+go_parallel = "github.com/dgravesa/go-parallel/parallel"
 DEPENDENCIES: list[str] = [go_parallel]
 
 

@@ -130,7 +130,7 @@ def _mount():
     """
 
     try:
-        subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/build.py"], check=True)
+        subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/compile.py"], check=True)
 
     except subprocess.CalledProcessError:
         print("Failed to acquire or compile libraries! Aborting...")
