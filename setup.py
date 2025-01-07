@@ -71,11 +71,8 @@ except ImportError:
 
 
 setup(
-    cmdclass={"build_py": GoBuildExt},
-    distclass=MyDistribution,
     packages=["fast_perlin_noise"],
-    package_data={
-        "fast_perlin_noise": ["build/lib/fast_perlin_noise/*.so", "build/lib/fast_perlin_noise/*.h"],  # Ensure .so and .h are included
-    },
-    include_package_data=True,  # Ensure package_data is honored
+    build_golang={'root': 'github.com/joshuaRiefman/fast_perlin_noise'},
+    ext_modules= [Extension('libfast_perlin_noise', ['src/main.go'])],
+    include_package_data=True
 )

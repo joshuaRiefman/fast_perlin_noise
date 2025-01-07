@@ -1,7 +1,7 @@
 import ctypes
 import pathlib
 
-library_path = pathlib.Path(__file__).parent / "perlin_noise.so"
+library_path = pathlib.Path(__file__).parent.parent / "libfast_perlin_noise.so"
 try:
     abs_library_path = str(library_path.absolute())
     print(str(abs_library_path))
