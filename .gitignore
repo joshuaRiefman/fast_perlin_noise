@@ -27,3 +27,5 @@ build/
 
 *.egg-info
 .idea
+
+dist/
