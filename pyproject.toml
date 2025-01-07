@@ -22,11 +22,11 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics"
 ]
 dependencies = [
-    "numpy
+    "numpy",
 ]
 
 [project.urls]
-Repository = "https://github.com/joshuaRiefman/perlinNoise"
+Repository = "https://github.com/joshuaRiefman/fast_perlin_noise"
 
 [tool.setuptools-git-versioning]
 enabled = true

@@ -1,8 +1,7 @@
-import pathlib
-import subprocess
 import numpy as np
+from enum import StrEnum
+from fast_perlin_noise import libfast_perlin_noise
 import ctypes
-from strenum import StrEnum
 
 
 class PerlinNoise:
@@ -47,21 +46,6 @@ class PerlinNoise:
         self.strength: float = strength
         self.random_mode: PerlinNoise.RandomMode = random_mode
 
-        _mount()
-        self.go_library = ctypes.cdll.LoadLibrary(f"{pathlib.Path(__file__).parent}/bin/perlin_noise.so")
-
-        self.go_library.generatePerlinNoise.argtypes = [
-            ctypes.POINTER(ctypes.c_float),
-            ctypes.c_uint32,
-            ctypes.c_uint32,
-            ctypes.c_float,
-            ctypes.c_uint32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_uint32
-        ]
-
     def generate_noise_matrix(self, width: int = None, height: int = None, random_seed: int = None) -> np.ndarray:
         """
 
@@ -87,7 +71,7 @@ class PerlinNoise:
         output_array = np.zeros(width * height).astype(ctypes.c_float)
         ptr = output_array.ctypes.data_as(ctypes.POINTER(ctypes.c_float))
 
-        self.go_library.generatePerlinNoise(
+        libfast_perlin_noise.generatePerlinNoise(
             ptr,
             noise_width,
             noise_height,
@@ -115,23 +99,3 @@ class PerlinNoise:
         """
 
         return self.generate_noise_matrix(size, 1, random_seed)
-
-
-def test():
-    PerlinNoise().generate_noise_matrix(256, 256)
-    print("Success!")
-
-
-def _mount():
-    """
-
-    Ensure that Go libraries have been compiled, and compile them if they have not.
-
-    """
-
-    try:
-        subprocess.run(["python", f"{pathlib.Path(__file__).parent.parent}/fast_perlin_noise/compile.py"], check=True)
-
-    except subprocess.CalledProcessError:
-        print("Failed to acquire or compile libraries! Aborting...")
-        exit(1)
