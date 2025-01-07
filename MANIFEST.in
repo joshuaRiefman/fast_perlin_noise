@@ -1,4 +1,1 @@
-include example/*.png
-include fast_perlin_noise/src/*.go
-include fast_perlin_noise/bin/*.so
-include fast_perlin_noise/src/go.mod
+include fast_perlin_noise/*.so
