@@ -1,5 +1,5 @@
 import numpy as np
-from enum import StrEnum
+from strenum import StrEnum
 from fast_perlin_noise import libfast_perlin_noise
 import ctypes
 
