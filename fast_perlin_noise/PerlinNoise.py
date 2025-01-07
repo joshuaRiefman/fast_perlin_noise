@@ -68,7 +68,7 @@ class PerlinNoise:
         else:
             random_seed: int = int(np.random.random())
 
-        output_array = np.zeros(width * height).astype(ctypes.c_float)
+        output_array = np.zeros(noise_width * noise_height).astype(ctypes.c_float)
         ptr = output_array.ctypes.data_as(ctypes.POINTER(ctypes.c_float))
 
         libfast_perlin_noise.generatePerlinNoise(
