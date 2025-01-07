@@ -22,7 +22,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install .
-        mount_perlin_noise
         pip install flake8 pytest
     - name: Lint with flake8
       run: |
@@ -32,5 +31,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Test
       run: |
-        test_perlin_noise
+        python3 example/example.py
         
