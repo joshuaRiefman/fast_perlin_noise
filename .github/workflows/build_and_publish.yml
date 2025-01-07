@@ -78,10 +78,6 @@ jobs:
         run: cibuildwheel --output-dir dist
         env:
           CIBW_ENVIRONMENT: 'PATH="$HOME/go/bin:$PATH"'
-          CIBW_BEFORE_BUILD: >
-            go mod tidy &&
-            go build &&
-            echo "Go build completed"
 
       - name: Upload wheels to PyPI
         run: twine upload dist/*
