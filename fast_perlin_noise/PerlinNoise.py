@@ -4,22 +4,23 @@ from fast_perlin_noise import libfast_perlin_noise
 import ctypes
 
 
+class RandomMode(StrEnum):
+    """
+
+    This class discretizes the random seed modes that PerlinNoise uses.
+
+    Use `auto` to automatically generate a random value to use as random seed.
+    Use `defined` to manually control the random seed used.
+
+    If in doubt, use `auto`.
+
+    """
+
+    auto = "auto"
+    defined = "defined"
+
+
 class PerlinNoise:
-    class RandomMode(StrEnum):
-        """
-
-        This class discretizes the random seed modes that PerlinNoise uses.
-
-        Use `auto` to automatically generate a random value to use as random seed.
-        Use `defined` to manually control the random seed used.
-
-        If in doubt, use `auto`.
-
-        """
-
-        auto = "auto"
-        defined = "defined"
-
     def __init__(self, width: int = 256, height: int = 256, persistence: float = 0.65, num_layers: int = 4,
                  roughness: float = 2.85, base_roughness: float = 0.9, strength: float = 0.6,
                  random_mode: RandomMode = RandomMode.auto):
@@ -62,11 +63,10 @@ class PerlinNoise:
         noise_width: int = width if width is not None else self.width
         noise_height: int = height if height is not None else self.height
 
-        if self.random_mode == PerlinNoise.RandomMode.defined:
+        if self.random_mode == RandomMode.defined:
             assert random_seed is not None, "Random Seed must be defined when using RandomMode.defined!"
-            noise_random_seed = random_seed
         else:
-            noise_random_seed: int = int(np.random.random())
+            random_seed: int = int(np.random.random())
 
         output_array = np.zeros(width * height).astype(ctypes.c_float)
         ptr = output_array.ctypes.data_as(ctypes.POINTER(ctypes.c_float))
@@ -80,7 +80,7 @@ class PerlinNoise:
             self.roughness,
             self.baseRoughness,
             self.strength,
-            noise_random_seed
+            random_seed
         )
 
         output = np.array(output_array, 'f')
