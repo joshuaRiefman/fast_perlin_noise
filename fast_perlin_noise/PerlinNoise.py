@@ -35,7 +35,7 @@ class PerlinNoise:
         :param float roughness: Define roughness,  must be a real number.
         :param float base_roughness: Define base layer roughness, must be a real number.
         :param float strength: Define noise strength, must be a real number.
-        :param PerlinNoise.RandomMode random_mode: Define random_mode, must be of RandomMode enum.
+        :param RandomMode random_mode: Define random_mode, must be of RandomMode enum.
 
         """
         self.width: int = width
@@ -45,7 +45,7 @@ class PerlinNoise:
         self.roughness: float = roughness
         self.baseRoughness: float = base_roughness
         self.strength: float = strength
-        self.random_mode: PerlinNoise.RandomMode = random_mode
+        self.random_mode: RandomMode = random_mode
 
     def generate_noise_matrix(self, width: int = None, height: int = None, random_seed: int = None) -> np.ndarray:
         """
@@ -97,5 +97,4 @@ class PerlinNoise:
         :return: Perlin noise as a NumPy array
 
         """
-
         return self.generate_noise_matrix(size, 1, random_seed)
