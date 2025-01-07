@@ -1,6 +1,7 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
+
 
 [project]
 name = "fast_perlin_noise"
@@ -10,12 +11,12 @@ authors = [
 maintainers = [
     {name = "Joshua Riefman", email = "joshuariefman@gmail.com"}
 ]
+dynamic = ["version"]
 description = "A simple and fast Perlin noise generation library"
 readme = "README.md"
 requires-python = ">=3.9"
 keywords = ["perlin-noise", "noise", "go"]
 license = { file = "LICENSE"}
-version = "0.1.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Natural Language :: English",
@@ -27,6 +28,16 @@ dependencies = [
 
 [project.urls]
 Repository = "https://github.com/joshuaRiefman/fast_perlin_noise"
+
+[tool.setuptools_scm]
+version_file = "fast_perlin_noise/_version.py"
+
+[tool.cibuildwheel]
+archs = "auto"  # Automatically detects architectures (e.g., x86, ARM)
+skip = ["pp*", "*-musllinux_*", "*-win32"]  # Skip PyPy (only want CPython), Musllinux, win32 wheels
+manylinux-x86_64-image = "manylinux2014"
+manylinux-i686-image = "manylinux2014"
+manylinux-aarch64-image = "manylinux2014"
 
 [tool.setuptools]
 packages = ["fast_perlin_noise"]

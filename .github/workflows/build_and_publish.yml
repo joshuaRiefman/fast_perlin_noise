@@ -1,0 +1,90 @@
+name: Build and Publish Wheels
+
+on:
+  release:  # This workflow will be triggered upon a release being published on GitHub
+    types:
+      - published
+
+  workflow_dispatch:  # Enable manual dispatching of this workflow
+
+jobs:
+  build_sdist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Required to fetch full history including tags, so setuptools_scm can determine version
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine==5.1.1 
+
+      - name: Build Source Distribution
+        run: |
+          python3 -m build --sdist
+
+      - name: Upload sdist to PyPI
+        run: twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+  build_wheels:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false  # Without this, one of the wheels failing for some reason would cancel all of the others.
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]  # Build wheels for macOS, Windows, and Linux.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Required to fetch full history including tags, so setuptools_scm can determine version
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+
+      # Install and prepare build dependencies
+      - name: Install and prepare build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools_scm==8.1.0 twine==5.1.1 cibuildwheel==2.20.0
+          python -m setuptools_scm 
+          git status
+
+      # Set up Go compiler
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.20.7'  # Specify the Go version
+
+      # Ensure Go dependencies are installed and environment is ready
+      - name: Prepare Go environment
+        run: |
+          go version
+          go env
+
+      # Build wheels using cibuildwheel
+      - name: Build wheels
+        run: cibuildwheel --output-dir dist
+        env:
+          CIBW_ENVIRONMENT: 'PATH="$HOME/go/bin:$PATH"'
+          CIBW_BEFORE_BUILD: >
+            go mod tidy &&
+            go build &&
+            echo "Go build completed"
+
+      - name: Upload wheels to PyPI
+        run: twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}

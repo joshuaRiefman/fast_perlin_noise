@@ -25,3 +25,4 @@ libfast_perlin_noise.generatePerlinNoise.argtypes = [
 
 from fast_perlin_noise.PerlinNoise import PerlinNoise
 
+from ._version import __version__
