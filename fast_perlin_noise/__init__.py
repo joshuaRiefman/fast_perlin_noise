@@ -1,10 +1,12 @@
 import ctypes
 import pathlib
+import os
 
-library_path = pathlib.Path(__file__).parent.parent / "libfast_perlin_noise.so"
+package_dir = pathlib.Path(__file__).parent
+library_name = list(filter(lambda x: x.startswith("libfast_perlin_noise") and x.endswith(".so"), os.listdir(package_dir.parent)))[0]
+library_path = pathlib.Path(__file__).parent.parent / library_name
 try:
     abs_library_path = str(library_path.absolute())
-    print(str(abs_library_path))
     libfast_perlin_noise = ctypes.cdll.LoadLibrary(abs_library_path)
 except OSError as e:
     print("Failed to import required Go extension for fast_perlin_noise!")
