@@ -29,3 +29,5 @@ build/
 .idea
 
 dist/
+fast_perlin_noise/_version.py
+src/go.sum
