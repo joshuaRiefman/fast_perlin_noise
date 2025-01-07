@@ -15,6 +15,8 @@ class GoBuildExt(build_py):
         output_so = package_dir / "perlin_noise.so"
 
         os.makedirs(package_dir, exist_ok=True)  # Ensure package directory exists
+        print(str(go_src_dir))
+        print(os.listdir(go_src_dir))
 
         # Get Go dependencies
         subprocess.check_call([

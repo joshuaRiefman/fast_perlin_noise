@@ -31,3 +31,4 @@ build/
 dist/
 fast_perlin_noise/_version.py
 src/go.sum
+*.png
