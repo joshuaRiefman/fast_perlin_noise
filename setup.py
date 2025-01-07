@@ -9,19 +9,12 @@ class GoBuildExt(build_py):
     def run(self):
         self.run_command("build_ext")
 
-        print(os.listdir(os.path.dirname(__file__)))
-
         # Path to the Go source and the target output shared library
         go_src_dir = pathlib.Path(os.path.join(os.path.dirname(__file__), "src")).absolute()
         package_dir = pathlib.Path(os.path.join(self.build_lib, "fast_perlin_noise")).absolute()
         output_so = package_dir / "perlin_noise.so"
 
-        print(os.listdir(go_src_dir))
-
         os.makedirs(package_dir, exist_ok=True)  # Ensure package directory exists
-
-        print(os.listdir(self.build_lib))
-        print(os.listdir(package_dir))
 
         # Get Go dependencies
         subprocess.check_call([
@@ -34,10 +27,6 @@ class GoBuildExt(build_py):
             "-buildmode=c-shared",
             "-o", str(output_so.absolute()),
         ], cwd=go_src_dir)
-
-        print(output_so)
-
-        print(os.listdir(package_dir))
 
         super().run()
 
