@@ -14,7 +14,7 @@ maintainers = [
 dynamic = ["version"]
 description = "A simple and fast Perlin noise generation library"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 keywords = ["perlin-noise", "noise", "go"]
 license = { file = "LICENSE"}
 classifiers = [
