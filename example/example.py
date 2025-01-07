@@ -10,5 +10,6 @@ def main():
     plt.imshow(noise_image)
     plt.savefig("noise_example.png")
 
+
 if __name__ == "__main__":
     main()

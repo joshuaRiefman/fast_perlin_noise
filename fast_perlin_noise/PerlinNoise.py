@@ -84,7 +84,7 @@ class PerlinNoise:
         )
 
         output = np.array(output_array, 'f')
-        return output.reshape(width, height)
+        return output.reshape(noise_width, noise_height)
 
     def generate_noise_vector(self, size: int = None, random_seed: float = None) -> np.ndarray:
         """
