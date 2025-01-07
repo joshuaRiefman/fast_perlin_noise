@@ -1,87 +1,62 @@
-# perlinNoise
-A Perlin noise generation library implemented in Go
+# Fast Perlin Noise
+This is a very fast Perlin noise library, mostly in Go with Python bindings, that I developed upon trying out a few other available 
+Python libraries and realized that none were fast enough for my project requirements. Algorithms are from the 
+libnoise dotnet project which I ported to Go.
 
-## Build 
+## Installation 
 
-To build a shared library accessible from Python
+To install `fast_perlin_noise`, 
 ```bash
-go build -o perlin_noise.so -buildmode=c-shared main/src
+pip3 install fast-perlin-noise
 ```
-You made need to include the following build flags
-```bash
-CGO_ENABLED=1
-```
-As well as operating and platform specific flags. For example on an Apple Silicon Mac,
-```bash
-GOOS=darwin GOARCH=arm64
-```
+Wheels are automatically built for Windows, Linux, and macOS for x86-64 and ARM64 architectures. If a wheel does not 
+exist for your platform, you will require a Go compiler to complete the installation.
+
+
+## Dependencies
+`fast_perlin_noise` has very limited dependencies: only `numpy` is required!
 
 ## Tests and Examples
-To run _perlinNoise_ and generate example simplex and Perlin noise images,
-```bash
-go run main/src
+
+`fast_perlin_noise` has a very beginner friendly Python interface, with optional advanced use.
+```python
+from fast_perlin_noise import PerlinNoise
+import numpy as np
+import matplotlib.pyplot as plt
+
+noise_generator: PerlinNoise = PerlinNoise(width=256, height=256)
+noise_image: np.ndarray = noise_generator.generate_noise_matrix()
+
+plt.imshow(noise_image)  # View the resulting noise
 ```
-![Simplex Noise](example/output_simplex.png)  
 ![Perlin Noise](example/output_perlin.png)  
-Or, you can run the Python test script that serves as a demo of how to integrate _perlinNoise_ into your project.
-Ensure you have the required dependencies:
-```bash
-python3 --version
-pip3 --version
-pip3 install -r requirements.txt
-```
-To run the script,
-```bash
-python3 example.py
-```
+
+You can run and look at ``example/example.py`` to see this in action.
+
 
 ## Output 
-_perlinNoise_ currently outputs a matrix of noise of which the values range from `0.0` to `1.0`.
+`fast_perlin_noise` currently outputs a matrix (an `ndarray` with the shape `m, n`) of noise of which the values range from `0.0` to `1.0`.
 
 ## Interface and Parameters
 
-Perlin noise can be generated using the `generatePerlinNoise` function. See `test.py` for an example of how to load and access the library in Python.
+For more advanced use, many parameters can be tuned to adjust the resulting noise.
+Perlin noise can be generated using the `generate_noise_matrix` function.
 
-| Parameter     | Type     | Description                                                                     |
-|---------------|----------|---------------------------------------------------------------------------------|
-| resultPtr     | *float32 | Pointer to the output matrix (faked dimensionality)[[1]](#faked-dimensionality) |
-| width         | uint32   | Width of resultant matrix.                                                      |
-| height        | uint32   | Height of resultant matrix.                                                     |
-| persistence   | float32  | Intensity falloff coefficient of subsequent noise layers.                       |
-| numLayers     | uint32   | Number of simplex noise layers to use.                                          |
-| roughness     | float32  | Frequency increase coefficient for subsequent noise layers.                     |
-| baseRoughness | float32  | Initial frequency for noise                                                     |
-| strength      | float32  | Scalar multiplier for noise values                                              |
-| randomSeed    | float32  | Define the random seed to be used                                               |
+| Parameter     | Type  | Description                                                 |
+|---------------|-------|-------------------------------------------------------------|
+| width         | uint  | Width of resultant matrix.                                  |
+| height        | uint  | Height of resultant matrix.                                 |
+| persistence   | float | Intensity falloff coefficient of subsequent noise layers.   |
+| numLayers     | uint  | Number of simplex noise layers to use.                      |
+| roughness     | float | Frequency increase coefficient for subsequent noise layers. |
+| baseRoughness | float | Initial frequency for noise                                 |
+| strength      | float | Scalar multiplier for noise values                          |
+| randomSeed    | float | Define the random seed to be used                           |
 
 
-## Controlling the noise's behaviour
+## Controlling Noise Output
 
-Behaviour of the noise can be changed by changing parameters to the `generatePerlinNoise` interface. 
+Behaviour of the noise can be changed by changing parameters to the `PerlinNoise` interface. 
 Settings include `width` and `height` to determine the dimensions of the resulting matrix. `baseRoughness` and `roughness` to control the frequency and frequency falloff.
 `persistence` to change the impact of subsequent layers (low value results in a "softer" look). `numLayers` controls how many layers of noise will be used (more layers results in more complex, structured noise).
-`strength` is a simple scalar multiplier to the matrix (control intensity of noise). Lastly, `randomSeed` can be changed to change the seed of the noise (_perlinNoise_ is deterministic when randomSeed is known). 
-
-### Faked Dimensionality
-
-For reduced complexity of the interface between the compiled library and the user, two-dimensionality is faked for the output matrix.
-Instead of an actual `[width, height]` matrix, a vector of `width * height` elements will be used. Nonetheless, we can index
-what would be at `[x, y]` if we were using an actual matrix by indexing `[x * width + y]` in our vector, thus faking
-the dimensions. The result for the use case of _perlinNoise_ is identical functionality with a simpler interface.
-
-<br>
-
-It is easy to restore the actual matrix. Here's an example with NumPy, and without NumPy in Python. Assuming that `output_vector` is the resultant vector returned by `generatePerlinNoise` with
-which was called with `width=N` and `height=M`.
-```python
-# Example using NumPy
-import numpy as np
-noise_vector: np.ndarray = np.array(output_vector, 'f')
-noise_matrix: np.ndarray = noise_vector.reshape(N, M)
-
-# Example without NumPy
-noise_matrix = [[], []]
-for x in range(N):
-    for y in range(M):
-        noise_matrix[x, y] = output_vector[x * N + y]
-```
+`strength` is a simple scalar multiplier to the matrix (control intensity of noise). Lastly, `randomSeed` can be changed to change the seed of the noise (`fast_perlin_noise` is deterministic when randomSeed is known). 
